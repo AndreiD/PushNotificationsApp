@@ -15,6 +15,11 @@
  */
 package com.pushnotificationsapp.app;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -60,6 +65,9 @@ public class DemoActivity extends Activity {
     Context context;
 
     String regid;
+    private EditText editText_reg_id;
+    private Button button_copy_clipboard;
+    private Button button_send_email;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +75,9 @@ public class DemoActivity extends Activity {
 
         setContentView(R.layout.main);
         mDisplay = (TextView) findViewById(R.id.display);
+        editText_reg_id = (EditText) findViewById(R.id.editText_reg_id);
+        button_copy_clipboard = (Button) findViewById(R.id.button_copy_clipboard);
+        button_send_email = (Button) findViewById(R.id.button_send_email);
 
         context = getApplicationContext();
 
@@ -80,11 +91,42 @@ public class DemoActivity extends Activity {
             }else {
                 Log.e("==========================","=======================================");
                 Log.e("==========================",regid);
+                editText_reg_id.setText(regid, TextView.BufferType.EDITABLE);
                 Log.e("==========================","=======================================");
             }
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
+
+        button_copy_clipboard.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onClick(View view) {
+                int sdk = android.os.Build.VERSION.SDK_INT;
+                if(sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
+                    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    clipboard.setText(editText_reg_id.getText().toString());
+                } else {
+                    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    android.content.ClipData clip = android.content.ClipData.newPlainText("label",editText_reg_id.getText().toString());
+                    clipboard.setPrimaryClip(clip);
+                }
+                Toast.makeText(DemoActivity.this,"it's in the clipboard now",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        button_send_email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String shareBody = editText_reg_id.getText().toString();
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Registration ID:");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share using..."));
+            }
+        });
+
     }
 
     @Override
@@ -175,7 +217,7 @@ public class DemoActivity extends Activity {
                     }
                     regid = gcm.register(SENDER_ID);
                     msg = "Device registered, registration ID=" + regid;
-
+                    editText_reg_id.setText(regid, TextView.BufferType.EDITABLE);
                     // You should send the registration ID to your server over HTTP, so it
                     // can use GCM/HTTP or CCS to send messages to your app.
                     sendRegistrationIdToBackend();

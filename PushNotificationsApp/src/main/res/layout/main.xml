@@ -16,7 +16,7 @@
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent" android:background="#000000">
 
     <LinearLayout android:layout_width="fill_parent"
                   android:layout_height="fill_parent"
@@ -43,10 +43,20 @@
 
         </LinearLayout>
 
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText_reg_id" android:lines="5" android:background="#000000" android:textColor="#FFFFFF" android:gravity="left|top" android:singleLine="false" android:textSize="14dp" android:padding="5dp"/>
         <TextView
                 android:id="@+id/display"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" android:textColor="#888888"/>
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Copy to clipboard"
+                android:id="@+id/button_copy_clipboard"/>
+        <Button android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Send to email/text" android:id="@+id/button_send_email"/>
 
     </LinearLayout>
 

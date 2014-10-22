@@ -1,5 +1,9 @@
 package com.pushnotificationsapp.app;
 
+import android.annotation.SuppressLint;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -45,6 +49,8 @@ public class MainActivity extends Activity {
     Context context;
 
     String regid;
+    private EditText editText_reg_id;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +59,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         mDisplay = (TextView) findViewById(R.id.display);
 
+
+
         context = getApplicationContext();
+
 
         // Check device for Play Services APK. If check succeeds, proceed with GCM registration.
         if (checkPlayServices()) {
@@ -70,6 +79,9 @@ public class MainActivity extends Activity {
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
+
+
+
     }
 
     @Override
@@ -160,6 +172,8 @@ public class MainActivity extends Activity {
                     }
                     regid = gcm.register(SENDER_ID);
                     msg = "Device registered, registration ID=" + regid;
+
+
 
                     // You should send the registration ID to your server over HTTP, so it
                     // can use GCM/HTTP or CCS to send messages to your app.
