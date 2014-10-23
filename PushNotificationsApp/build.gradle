@@ -23,9 +23,19 @@ android {
         versionName "1.0"
     }
     buildTypes {
-        release {
+
+
+        debug {
             runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            debuggable true
+
+        }
+
+        release {
+            runProguard true
+            proguardFile getDefaultProguardFile('proguard-rules.txt')
+            debuggable false
+
         }
     }
 }
@@ -41,6 +51,6 @@ dependencies {
     // The Support Repository (separate from the corresponding library) can be found in the Extras category.
 
     compile "com.google.android.gms:play-services:5.0.89+"
-    
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
