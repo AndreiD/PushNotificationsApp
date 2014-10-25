@@ -216,8 +216,8 @@ public class DemoActivity extends Activity {
                         gcm = GoogleCloudMessaging.getInstance(context);
                     }
                     regid = gcm.register(SENDER_ID);
-                    msg = "Device registered, registration ID=" + regid;
-                    editText_reg_id.setText(regid, TextView.BufferType.EDITABLE);
+                    msg = regid;
+
                     // You should send the registration ID to your server over HTTP, so it
                     // can use GCM/HTTP or CCS to send messages to your app.
                     sendRegistrationIdToBackend();
@@ -239,7 +239,10 @@ public class DemoActivity extends Activity {
 
             @Override
             protected void onPostExecute(String msg) {
-                mDisplay.append(msg + "\n");
+
+                try {
+                    editText_reg_id.setText(msg, TextView.BufferType.EDITABLE);
+                }catch (Exception ex){}
             }
         }.execute(null, null, null);
     }
